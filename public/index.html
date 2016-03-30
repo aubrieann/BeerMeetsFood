@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Stylesheet compiled with Stylus -->
+	<link rel="stylesheet" href="styles/beer.css">
+	<!-- meta data -->
+	<meta charset="UTF-8">
+	<meta name="keywords" content="beer, craft, food, recipes, pairing">
+	<meta name="description" content="Craft beer is special. The food you eat with it should be special, too.">
+	<meta name="author" content="Mike Sandula, Aleah Ellis, Aubrie Glennon, KJ Schmidt">
+	<!-- title name, logo -->
+	<link rel="shortcut icon" href="images/logo.png" type="image/png"/>
+	<title>Crafted: Beer Meets Food</title>
+</head>
+<body ng-app="beerApp">
+	
+	<!-- for the fb share button -->
+	<div id="fb-root"></div>
+		<script>
+		(function(d, s, id) {
+	  		var js, fjs = d.getElementsByTagName(s)[0];
+	  		if (d.getElementById(id)) return;
+	  		js = d.createElement(s); js.id = id;
+	  		js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=997377097020840";
+	  		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		</script>
+
+	<!-- for the twitter button -->
+	<script>
+	!function(d,s,id){
+		var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+		if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+	</script>
+
+	<div class="header">
+		<img src="images/logo.png" id="logo" alt="">
+
+	<div class="container">
+		<!-- dropdown menus to appear sitewide -->
+		<div ng-controller="mainController" class="dropdowns">
+			<!-- dropdown for breweries -->
+			<select ng-model="dropdown1" 
+			        ng-options="brewery for brewery in breweries" 
+			        ng-class="'brewMenu'"
+			        ng-change="selectBrewery(dropdown1); hideBeerInfo()"
+			        >
+				<option value="">Choose your brewery ...</option>
+			</select>
+			<!-- dropdown for beers -->
+			<select ng-model="dropdown2"
+			        ng-options="beer.Name for beer in beers"
+				    ng-class="'brewMenu'"
+				    id="beerDropdown"
+				    ng-change="selectBeer(dropdown2); showBeerInfo()"
+				    >
+				<option value="">Then choose your beer ...</option>
+			</select>
+
+			<!-- pairingController nested inside mainController -->
+		    <div ng-controller="pairingController" class='views' id="beerInfo">
+			    
+			    <div class="generalInfo">
+
+			    	<div id="socialButtonsDesktop">
+				    	<!-- Share on Facebook button -->
+				    	<a href="http://www.facebook.com/share.php?u=https://beermeetsfood.us&title=Crafted: Beer Meets Food" data-href="https://beermeetsfood.us" data-layout="button">
+				    		<button id="fbButton">
+				    		<img src="images/facebook.png" alt="" id="fbLogo">
+				    		Share on Facebook
+				    		</button>
+				    	</a>	
+				    	<!-- Share on Twitter button -->
+				    	<a href="http://twitter.com/intent/tweet?status=I just tried a new beer pairing via Crafted!+https://beermeetsfood.us">
+				    		<button id="twitterButton">
+				    		<img src="images/twitter.png" alt="" id="twitterLogo">
+				    		Share on Twitter
+				    		</button>
+				    	</a>
+				    </div>
+			    
+			    	<h3>About your beer</h3>
+
+			    	<img src="{{beer.Logo}}" alt="" class="breweryLogo">
+			    	<p><span>Name:</span> {{beer.Name}}</p>
+			    	<p><span>Brewery:</span> {{beer.Brewery}}</p>
+			    	<p><span>Type:</span> {{beer.Type}}</p>
+			    	<p id="beerDescription"><span>Description:</span> {{beer.Description}}</p>
+			    </div>
+
+		    	<div class="pairingInfo">
+		    		<h3>Perfect pairings</h3>
+			    	<p><span>Try these recipes with your beer:</span> 
+			    	<ul>
+			    		<li><a target="blank" href="{{recipeArray[0].url}}">{{recipeArray[0].title}}</a></li>
+			    		<li><a target="blank" href="{{recipeArray[1].url}}">{{recipeArray[1].title}}</a></li>
+			    		<li><a target="blank" href="{{recipeArray[2].url}}">{{recipeArray[2].title}}</a></li>	
+			    	</ul>
+				</div>
+
+			    <div class="servingInfo">
+			    	<h3>Serving</h3>
+			    	<img src="{{beer.glassImg}}" class="beerGlass">
+			    	<p><span>Glass:</span> {{beer.Glass}}</p>
+			    	<p><span>Temperature:</span><br /> {{beer.Temperature}}</p>
+		    	</div>
+
+		    	<div id="socialButtonsPhone">
+			    	<!-- Share on Facebook button -->
+			    	<a href="http://www.facebook.com/share.php?u=https://beermeetsfood.us&title=Crafted: Beer Meets Food" data-href="https://beermeetsfood.us" data-layout="button">
+			    		<button id="fbButton">
+			    		<img src="images/facebook.png" alt="" id="fbLogo">
+			    		Share on Facebook
+			    		</button>
+			    	</a>	
+			    	<!-- Share on Twitter button -->
+			    	<a href="http://twitter.com/intent/tweet?status=I just tried a new beer pairing via Crafted!+https://beermeetsfood.us">
+			    		<button id="twitterButton">
+			    		<img src="images/twitter.png" alt="" id="twitterLogo">
+			    		Share on Twitter
+			    		</button>
+			    	</a>
+			    </div>
+
+			</div> <!-- end of pairingController -->
+
+		</div> <!-- end of mainController -->
+
+	</div> <!-- end of container -->
+
+	<!-- footer -->
+	<footer id="footerPosition"> 
+		<a href="#" onclick="contact_open();">Contact</a> |
+		<div id="contactFade" onClick="contact_close();"></div>
+		<a href="#" onclick="about_open();">About the app</a>
+		<div id="aboutFade" onClick="about_close();"></div>
+		<p> &#169; 2016 MAAK productions</p>
+  	</footer>
+
+	<!-- Contact lightbox -->
+	<div id="contact">
+		<h3>Connect with the developers</h3>
+
+		<div class="contactMAAK" id="even">
+			<br>
+			<img class="headshots" src="images/mike.jpg" />
+			<br>
+			<p class="contactNames">Mike</p>
+			<a href="mailto:msandula@gmail.com"><img class="icons"src="images/email.png" /></a>
+			<a target="blank" href="https://github.com/msandula12"><img class="icons"src="images/github.png" /></a>
+			<a target="blank" href="https://www.linkedin.com/in/mikesandula"><img class="icons"src="images/linkedin.png" /></a>
+		</div>
+		
+		<div class="contactMAAK" id="odd">
+			<br>
+			<img class="headshots" src="images/aubrie.jpg" />
+			<br>					
+			<p class="contactNames">Aubrie</p>
+			<a href="mailto:info@aubrieglennon.com"><img class="icons"src="images/email.png" /></a>
+			<a target="blank" href="https://github.com/aubrieann"><img class="icons"src="images/github.png" /></a>
+			<a target="blank" href="https://www.linkedin.com/in/aubrieglennon"><img class="icons"src="images/linkedin.png" /></a>
+		</div>
+
+		<div class="contactMAAK" id="even">
+			<br>
+			<img class="headshots" src="images/Aleah1.jpg" />
+			<br>
+			<p class="contactNames">Aleah</p>
+			<a href="mailto:aleah.is@icloud.com"><img class="icons"src="images/email.png" /></a>
+			<a target="blank" href="https://github.com/AleahEllis"><img class="icons"src="images/github.png" /></a>
+			<a target="blank" href="https://www.linkedin.com/in/aleahellis"><img class="icons"src="images/linkedin.png" /></a>
+		</div>
+
+		<div class="contactMAAK" id="odd">
+			<br>
+			<img class="headshots" src="images/KJ.jpg" />
+			<br>
+			<p class="contactNames">KJ</p>
+			<a href="mailto:kj.schmidt913@gmail.com"><img class="icons"src="images/email.png" /></a>
+			<a target="blank" href="http://www.github.com/kjschmidt913"><img class="icons"src="images/github.png" /></a>
+			<a target="blank" href="http://www.linkedin.com/in/schmidtkj"><img class="icons"src="images/linkedin.png" /></a>
+		</div>
+
+	</div>
+			 
+	<!-- About the App lightbox -->	
+	<div class="footer" id="about">
+		<h3>Crafted: Beer Meets Food</h3>
+		<p>
+		Crafted is a city-specific desktop and mobile-friendly application. Interest in craft beer has exploded in recent years and, as a result, specialty, small-scale breweries have popped up in many major cities. Crafted allows you to choose a local brew from your favorite local breweries and pair that choice with carefully selected recipes. The recipes are based on each beer's unique flavor profile. 
+		</p>
+		<p>
+		Lots of apps offer food pairings for general beer types (such as porters and IPAs), but only Crafted offers pairing combinations unique to the beer you're drinking.
+		</p>
+		<p>
+		The app is currently specific to downtown Detroit's thriving local breweries, but has plans to extend to other major cities throughout the U.S.
+		</p>			
+	</div>
+
+	<!-- 21+ modal on load -->
+	<div id="myModal" class="modal">
+		<div class="modalContent">
+			<h3>Welcome</h3>
+			<p>Are you of legal drinking age?</p>
+			<p class="modalOptions">
+				<span class="age" id="yes">Yes, I'm 21 or over</span>
+				<span class="age" id="no">No, I'm not</span>
+			</p>
+		</div>
+	</div>
+	
+	<!-- Angular library -->
+	<script src="libs/angular.min.js"></script>
+	
+	<!-- Local JavaScript files -->
+	<script src="app.js"></script>
+
+</body>
+</html>
